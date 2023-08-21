@@ -134,7 +134,7 @@ contract Ed25519 {
         }
     }
 
-    function verifySignature(bytes32 msgHash, bytes memory signature, uint256[2] memory publicKey)
+    function verifySignature(bytes memory msg, bytes memory signature, uint256[2] memory publicKey)
         public
         view
         returns (bool)
@@ -149,7 +149,7 @@ contract Ed25519 {
         (uint256 sB_x, uint256 sB_y) = scalarMultBase(uint256(sbytes));
 
         // Compute h = H(R || A || M)
-        bytes32 h = keccak256(abi.encodePacked(Rbytes, publicKey, msgHash));
+        bytes32 h = keccak256(abi.encodePacked(Rbytes, publicKey, msg));
 
         // Compute hA
         (uint256 hA_x, uint256 hA_y) = scalarMult(uint256(h), Point({x: publicKey[0], y: publicKey[1], z: 1}));
